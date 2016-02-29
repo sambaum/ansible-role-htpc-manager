@@ -2,7 +2,6 @@
 # defaults file for htpc-manager
 htpc_manager_enabled: yes
 htpc_manager_path: /opt/HTPCManager
-htpc_manager_use_hostnames: yes
 htpc_resolving: zeroconf              # Available values are zeroconf, hostname, staticip
 
 # htpc-manager branch

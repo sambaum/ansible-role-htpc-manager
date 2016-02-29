@@ -15,9 +15,11 @@ INSERT INTO "setting" VALUES(NULL,'kodi_hide_watched','0');
 INSERT INTO "setting" VALUES(NULL,'kodi_enable_pvr','0');
 {% endif %}
 {# CouchPotato Configuration #}
-{% if couchpotato_enabled is defined and couchpotato_enabled and couchpotato_host == ansible_default_ipv4.address and htpc_manager_use_hostnames %}
+{% if couchpotato_enabled is defined and couchpotato_enabled and couchpotato_host == ansible_default_ipv4.address and htpc_resolving == 'zeroconf' %}
+INSERT INTO "setting" VALUES(NULL,'couchpotato_host','{{ ansible_hostname }}.local');
+{% elif couchpotato_enabled is defined and couchpotato_enabled and couchpotato_host == ansible_default_ipv4.address and htpc_resolving == 'hostname' %}
 INSERT INTO "setting" VALUES(NULL,'couchpotato_host','{{ ansible_hostname }}');
-{% elif couchpotato_enabled is defined and couchpotato_enabled and couchpotato_host == ansible_default_ipv4.address and not htpc_manager_use_hostnames %}
+{% elif couchpotato_enabled is defined and couchpotato_enabled and couchpotato_host == ansible_default_ipv4.address and htpc_resolving == 'staticip' %}
 INSERT INTO "setting" VALUES(NULL,'couchpotato_host','{{ ansible_default_ipv4.address }}');
 {% elif couchpotato_enabled is defined and couchpotato_enabled and couchpotato_host != ansible_default_ipv4.address %}
 INSERT INTO "setting" VALUES(NULL,'couchpotato_host','{{ couchpotato_host }}');
@@ -31,9 +33,11 @@ INSERT INTO "setting" VALUES(NULL,'couchpotato_name','CouchPotato');
 INSERT INTO "setting" VALUES(NULL,'couchpotato_enable','on');
 {% endif %}
 {# Deluge Configuration #}
-{% if deluge_enabled is defined and deluge_enabled and deluged_host == ansible_default_ipv4.address and htpc_manager_use_hostnames %}
+{% if deluge_enabled is defined and deluge_enabled and deluged_host == ansible_default_ipv4.address and htpc_resolving == 'zeroconf' %}
+INSERT INTO "setting" VALUES(NULL,'deluge_host','{{ ansible_hostname }}.local');
+{% elif deluge_enabled is defined and deluge_enabled and deluged_host == ansible_default_ipv4.address and htpc_resolving == 'hostname' %}
 INSERT INTO "setting" VALUES(NULL,'deluge_host','{{ ansible_hostname }}');
-{% elif deluge_enabled is defined and deluge_enabled and deluged_host == ansible_default_ipv4.address and not htpc_manager_use_hostnames %}
+{% elif deluge_enabled is defined and deluge_enabled and deluged_host == ansible_default_ipv4.address and htpc_resolving == 'staticip' %}
 INSERT INTO "setting" VALUES(NULL,'deluge_host','{{ ansible_default_ipv4.address }}');
 {% elif deluged_host is defined and deluged_host != ansible_default_ipv4.address %}
 INSERT INTO "setting" VALUES(NULL,'deluge_host','{{ deluged_host }}');
@@ -47,9 +51,11 @@ INSERT INTO "setting" VALUES(NULL,'deluge_name','Deluge');
 INSERT INTO "setting" VALUES(NULL,'deluge_ssl','0');
 {% endif %}
 {# SickRage Configuration #}
-{% if sickbeard_enabled is defined and sickbeard_enabled and sickbeard_host == ansible_default_ipv4.address and htpc_manager_use_hostnames %}
+{% if sickbeard_enabled is defined and sickbeard_enabled and sickbeard_host == ansible_default_ipv4.address and htpc_resolving == 'zeroconf' %}
+INSERT INTO "setting" VALUES(NULL,'sickbeard_host','{{ ansible_hostname }}.local');
+{% elif sickbeard_enabled is defined and sickbeard_enabled and sickbeard_host == ansible_default_ipv4.address and htpc_resolving == 'hostname' %}
 INSERT INTO "setting" VALUES(NULL,'sickbeard_host','{{ ansible_hostname }}');
-{% elif sickbeard_enabled is defined and sickbeard_enabled and sickbeard_host == ansible_default_ipv4.address and not htpc_manager_use_hostnames %}
+{% elif sickbeard_enabled is defined and sickbeard_enabled and sickbeard_host == ansible_default_ipv4.address and htpc_resolving == 'staticip' %}
 INSERT INTO "setting" VALUES(NULL,'sickbeard_host','{{ ansible_default_ipv4.address }}');
 {% elif sickbeard_enabled is defined and sickbeard_enabled and sickbeard_host != ansible_default_ipv4.address %}
 INSERT INTO "setting" VALUES(NULL,'sickbeard_host','{{ sickbeard_host }}');
@@ -63,9 +69,11 @@ INSERT INTO "setting" VALUES(NULL,'sickbeard_port','8081');
 INSERT INTO "setting" VALUES(NULL,'sickbeard_basepath','/');
 {% endif %}
 {# Sabnzbd Configuration #}
-{% if sabnzbd_enabled is defined and sabnzbd_enabled and sabnzbd_host == ansible_default_ipv4.address and htpc_manager_use_hostnames %}
+{% if sabnzbd_enabled is defined and sabnzbd_enabled and sabnzbd_host == ansible_default_ipv4.address and htpc_resolving == 'zeroconf' %}
+INSERT INTO "setting" VALUES(NULL,'sabnzbd_host','{{ ansible_hostname }}.local');
+{% elif sabnzbd_enabled is defined and sabnzbd_enabled and sabnzbd_host == ansible_default_ipv4.address and htpc_resolving == 'hostname' %}
 INSERT INTO "setting" VALUES(NULL,'sabnzbd_host','{{ ansible_hostname }}');
-{% elif sabnzbd_enabled is defined and sabnzbd_enabled and sabnzbd_host == ansible_default_ipv4.address and not htpc_manager_use_hostnames %}
+{% elif sabnzbd_enabled is defined and sabnzbd_enabled and sabnzbd_host == ansible_default_ipv4.address and htpc_resolving == 'staticip' %}
 INSERT INTO "setting" VALUES(NULL,'sabnzbd_host','{{ ansible_default_ipv4.address }}');
 {% elif sabnzbd_enabled is defined and sabnzbd_enabled and sabnzbd_host != ansible_default_ipv4.address %}
 INSERT INTO "setting" VALUES(NULL,'sabnzbd_host','{{ sabnzbd_host }}');
@@ -96,9 +104,11 @@ CREATE TABLE kodi_servers (
     mac TEXT
 , starterport INT);
 {# Kodi Configuration #}
-{% if kodi_client_enabled is defined and kodi_client_enabled and kodi_host == ansible_default_ipv4.address and htpc_manager_use_hostnames %}
+{% if kodi_client_enabled is defined and kodi_client_enabled and kodi_host == ansible_default_ipv4.address and htpc_resolving == 'zeroconf' %}
+INSERT INTO "kodi_servers" VALUES(1,'{{ ansible_hostname }}','{{ ansible_hostname }}.local',8080,'kodi','','',NULL);
+{% elif kodi_client_enabled is defined and kodi_client_enabled and kodi_host == ansible_default_ipv4.address and htpc_resolving == 'hostname' %}
 INSERT INTO "kodi_servers" VALUES(1,'{{ ansible_hostname }}','{{ ansible_hostname }}',8080,'kodi','','',NULL);
-{% elif kodi_client_enabled is defined and kodi_client_enabled and kodi_host == ansible_default_ipv4.address and not htpc_manager_use_hostnames %}
+{% elif kodi_client_enabled is defined and kodi_client_enabled and kodi_host == ansible_default_ipv4.address and htpc_resolving == 'staticip' %}
 INSERT INTO "kodi_servers" VALUES(1,'{{ ansible_hostname }}','{{ ansible_default_ipv4.address }}',8080,'kodi','','',NULL);
 {% endif %}
 CREATE TABLE manageusers (
