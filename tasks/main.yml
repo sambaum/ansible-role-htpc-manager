@@ -1,12 +1,17 @@
 ---
 # tasks file for htpc-manager
 
-- name: Install Requirements
+- name: Install Package Requirements
   apt: pkg={{ item }} state=installed
   with_items:
     - python-cheetah
     - git
     - sqlite3
+    - python-pip
+    - python-dev
+
+- name: Install latest psutils with pip
+  pip: name=psutil
 
 - name: Get HTPC-Manager Code from GitHub
   git: repo={{ htpc_manager_repo }} dest={{ htpc_manager_path }}
@@ -35,7 +40,7 @@
   shell: cat /tmp/htpc_manager_config.db | sqlite3 {{ htpc_manager_path }}/userdata/database.db
 
 - name: Start HTPC-Manager
-  service: name={{ htpc_manger_init_script }} state=started  pattern='/usr/bin/python Htpc.py' enabled=yes
+  service: name={{ htpc_manger_init_script }} state=started pattern='/usr/bin/python Htpc.py' enabled=yes
 
 - name: Install Apache
   apt: name=apache2 state=installed

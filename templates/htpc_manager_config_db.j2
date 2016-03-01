@@ -86,6 +86,19 @@ INSERT INTO "setting" VALUES(NULL,'sabnzbd_basepath','');
 INSERT INTO "setting" VALUES(NULL,'sabnzbd_name','SABnzbd');
 INSERT INTO "setting" VALUES(NULL,'sabnzbd_ssl','0');
 {% endif %}
+INSERT INTO "setting" VALUES(NULL,'stats_limit_processes','');
+INSERT INTO "setting" VALUES(NULL,'stats_use_bars','0');
+INSERT INTO "setting" VALUES(NULL,'stats_psutil_enabled','on');
+INSERT INTO "setting" VALUES(NULL,'stats_scripts_enabled','0');
+INSERT INTO "setting" VALUES(NULL,'stats_enable','on');
+INSERT INTO "setting" VALUES(NULL,'stats_name','');
+INSERT INTO "setting" VALUES(NULL,'stats_use_whitelist','0');
+INSERT INTO "setting" VALUES(NULL,'stats_smart_enabled','0');
+INSERT INTO "setting" VALUES(NULL,'stats_ohm_enabled','0');
+INSERT INTO "setting" VALUES(NULL,'stats_ohm_ip','');
+INSERT INTO "setting" VALUES(NULL,'stats_filesystem','fusectl tmpfs rpc_pipefs cgroup nfsd fuse.gvfsd-fuse');
+INSERT INTO "setting" VALUES(NULL,'stats_ohm_port','');
+INSERT INTO "setting" VALUES(NULL,'stats_mountpoint','');
 CREATE TABLE newznab_indexers (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT,
@@ -117,8 +130,7 @@ CREATE TABLE manageusers (
     password TEXT,
     role TEXT
 );
-DELETE FROM sqlite_sequence;
-INSERT INTO "sqlite_sequence" VALUES('setting',48);
+{# DELETE FROM sqlite_sequence;
+INSERT INTO "sqlite_sequence" VALUES('setting',61); #}
 INSERT INTO "sqlite_sequence" VALUES('kodi_servers',1);
 COMMIT;
-
