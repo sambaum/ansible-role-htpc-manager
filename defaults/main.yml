@@ -1,8 +1,13 @@
 ---
 # defaults file for htpc-manager
+
+# Helper vaiable. In use by other roles
 htpc_manager_enabled: yes
+
 htpc_manager_path: /opt/HTPCManager
-htpc_resolving: zeroconf              # Available values are zeroconf, hostname, staticip
+
+# Available values are zeroconf, hostname, staticip
+htpc_resolving: zeroconf
 
 # htpc-manager branch
 htpc_manager_repo: https://github.com/Hellowlol/HTPC-Manager.git
