@@ -32,6 +32,28 @@ INSERT INTO "setting" VALUES(NULL,'couchpotato_port','5050');
 INSERT INTO "setting" VALUES(NULL,'couchpotato_name','CouchPotato');
 INSERT INTO "setting" VALUES(NULL,'couchpotato_enable','on');
 {% endif %}
+{# Sonarr Configuration #}
+{% if sonarr_enabled is defined and sonarr_enabled %}
+INSERT INTO "setting" VALUES(NULL,'sonarr_port','{{ sonarr_port }}');
+INSERT INTO "setting" VALUES(NULL,'sonarr_ssl','{{ sonarr_ssl }}');
+INSERT INTO "setting" VALUES(NULL,'sonarr_host','{{ sonarr_host }}');
+INSERT INTO "setting" VALUES(NULL,'sonarr_apikey','{{ sonarr_apikey }}');
+INSERT INTO "setting" VALUES(NULL,'sonarr_enable','{{ sonarr_enable }}');
+INSERT INTO "setting" VALUES(NULL,'sonarr_name','{{ sonarr_name }}');
+INSERT INTO "setting" VALUES(NULL,'sonarr_reverse_proxy_link','{{ sonarr_reverse_proxy_link }}');
+INSERT INTO "setting" VALUES(NULL,'sonarr_basepath','{{ sonarr_basepath }}');
+{% endif %}
+{# Radarr Configuration #}
+{% if radarr_enabled is defined and radarr_enabled %}
+INSERT INTO "setting" VALUES(NULL,'radarr_port','{{ radarr_port }}');
+INSERT INTO "setting" VALUES(NULL,'radarr_ssl','{{ radarr_ssl }}');
+INSERT INTO "setting" VALUES(NULL,'radarr_host','{{ radarr_host }}');
+INSERT INTO "setting" VALUES(NULL,'radarr_apikey','{{ radarr_apikey }}');
+INSERT INTO "setting" VALUES(NULL,'radarr_enable','{{ radarr_enable }}');
+INSERT INTO "setting" VALUES(NULL,'radarr_name','{{ radarr_name }}');
+INSERT INTO "setting" VALUES(NULL,'radarr_reverse_proxy_link','{{ radarr_reverse_proxy_link }}');
+INSERT INTO "setting" VALUES(NULL,'radarr_basepath','{{ radarr_basepath }}');
+{% endif %}
 {# Deluge Configuration #}
 {% if deluge_enabled is defined and deluge_enabled and deluged_host == ansible_default_ipv4.address and htpc_resolving == 'zeroconf' %}
 INSERT INTO "setting" VALUES(NULL,'deluge_host','{{ ansible_hostname }}.local');
@@ -131,6 +153,6 @@ CREATE TABLE manageusers (
     role TEXT
 );
 {# DELETE FROM sqlite_sequence;
-INSERT INTO "sqlite_sequence" VALUES('setting',61); #}
+INSERT INTO "sqlite_sequence" VALUES('setting',69); #}
 INSERT INTO "sqlite_sequence" VALUES('kodi_servers',1);
 COMMIT;

@@ -11,3 +11,23 @@ htpc_resolving: zeroconf
 
 # htpc-manager branch
 htpc_manager_repo: https://github.com/Hellowlol/HTPC-Manager.git
+
+#Sonarr
+sonarr_port: 8989
+sonarr_ssl: 0
+sonarr_host: localhost
+sonarr_apikey: ""
+sonarr_enable: on
+sonarr_name: Sonarr
+sonarr_reverse_proxy_link: ""
+sonarr_basepath: ""
+
+#Radarr
+radarr_port: 7878
+radarr_ssl: 0
+radarr_host: localhost
+radarr_apikey: ""
+radarr_enable: on
+radarr_name: Radarr
+radarr_reverse_proxy_link: ""
+radarr_basepath: ""
