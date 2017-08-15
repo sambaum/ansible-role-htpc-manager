@@ -139,12 +139,8 @@ CREATE TABLE kodi_servers (
     mac TEXT
 , starterport INT);
 {# Kodi Configuration #}
-{% if kodi_client_enabled is defined and kodi_client_enabled and kodi_host == ansible_default_ipv4.address and htpc_resolving == 'zeroconf' %}
-INSERT INTO "kodi_servers" VALUES(1,'{{ ansible_hostname }}','{{ ansible_hostname }}.local',8080,'kodi','','',NULL);
-{% elif kodi_client_enabled is defined and kodi_client_enabled and kodi_host == ansible_default_ipv4.address and htpc_resolving == 'hostname' %}
-INSERT INTO "kodi_servers" VALUES(1,'{{ ansible_hostname }}','{{ ansible_hostname }}',8080,'kodi','','',NULL);
-{% elif kodi_client_enabled is defined and kodi_client_enabled and kodi_host == ansible_default_ipv4.address and htpc_resolving == 'staticip' %}
-INSERT INTO "kodi_servers" VALUES(1,'{{ ansible_hostname }}','{{ ansible_default_ipv4.address }}',8080,'kodi','','',NULL);
+{% if kodi_client_enabled is defined and kodi_client_enabled %}
+INSERT INTO "kodi_servers" VALUES(1,'{{ kodi_host }}','{{ kodi_host }}',8080,'{{ kodi_user }}','{{ kodi_password }}','',NULL);
 {% endif %}
 CREATE TABLE manageusers (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
