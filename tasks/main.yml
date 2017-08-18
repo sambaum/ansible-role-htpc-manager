@@ -34,13 +34,26 @@
 - name: Upload HTPC-Manager configuration
   template: src=htpc_manager_config_db.j2 dest=/tmp/htpc_manager_config.db owner={{ htpc_user_username }}
 
+- name: check if database was already configured
+  stat:
+    path: "{{ htpc_manager_path }}/ansible_check"
+  register: ansible_check
+
 - name: Drop HTPC-Manager database
   file: path={{ htpc_manager_path }}/userdata/database.db state=absent
+  when: ansible_check.stat.exists == False
 
 - name: Update HTPC-Manager configuration database
   become: yes
   become_user: "{{ htpc_user_username }}"
   shell: cat /tmp/htpc_manager_config.db | sqlite3 {{ htpc_manager_path }}/userdata/database.db
+  when: ansible_check.stat.exists == False
+
+- name: touching file
+  file:
+    path: "{{ htpc_manager_path }}/ansible_check"
+    state: touch
+  when: ansible_check.stat.exists == False
 
 - name: Start HTPC-Manager
   service: name={{ htpc_manger_init_script }} state=started pattern='/usr/bin/python Htpc.py' enabled=yes
