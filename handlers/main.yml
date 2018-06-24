@@ -1,2 +1,11 @@
 ---
-# handlers file for htpc-manager
+
+- name: restart apache
+  service: 
+    name: apache2 
+    state: restarted
+
+- name: restart htpc-manager
+  systemd:
+    state: restarted
+    name: htpc-manager.service

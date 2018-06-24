@@ -28,27 +28,19 @@
     group: "{{ htpc_user_group }}"
     recurse: yes
 
-- name: Update HTPC-Manager init.d script
-  template: 
-    src: "init.{{ ansible_os_family }}"
-    dest: "/etc/init.d/{{ htpc_manger_init_script }}"
-    owner: root 
-    group: root 
-    mode: 0755
+- name: Configuring Autostart 
+  template:
+    src: htpc-manager.service.j2
+    dest: /etc/systemd/system/htpc-manager.service
+    owner: root
+    group: root
+    mode: 0644
 
-- name: Make sure HTPC-Manager starts on boot
-  service: 
-    name: "{{ htpc_manger_init_script }}"
-    state: started  
-    pattern: '/usr/bin/python Htpc.py' 
+- name: Enable htpc-manager.service
+  systemd:
+    name: htpc-manager.service
     enabled: yes
-
-- name: Stop HTPC-Manager daemon for configuration update
-  service: 
-    name: "{{ htpc_manger_init_script }}"
-    state: stopped  
-    pattern: '/usr/bin/python Htpc.py' 
-    enabled: yes
+    masked: no
 
 - name: Upload HTPC-Manager configuration
   template: 
@@ -67,24 +59,24 @@
     state: absent
   when: ansible_check.stat.exists == False
 
+- name: stop htpc-manager
+  systemd:
+    state: stopped
+    name: htpc-manager.service
+  when: ansible_check.stat.exists == False
+
 - name: Update HTPC-Manager configuration database
   become: yes
   become_user: "{{ htpc_user_username }}"
   shell: cat /tmp/htpc_manager_config.db | sqlite3 {{ htpc_manager_path }}/userdata/database.db
   when: ansible_check.stat.exists == False
+  notify: restart htpc-manager
 
 - name: touching file
   file:
     path: "{{ htpc_manager_path }}/ansible_check"
     state: touch
   when: ansible_check.stat.exists == False
-
-- name: Start HTPC-Manager
-  service: 
-    name: "{{ htpc_manger_init_script }}"
-    state: started 
-    pattern: '/usr/bin/python Htpc.py' 
-    enabled: yes
 
 - name: Enable apache proxy modules
   apache2_module: 
@@ -93,24 +85,28 @@
   with_items:
     - proxy
     - proxy_http
+  notify: restart apache
 
 - name: Disable default apache site
   file: 
     path: /etc/apache2/sites-enabled/000-default.conf 
     state: absent
+  notify: restart apache
 
 - name: Add HTPC-Manager VirtualHost
   template: 
     src: apache_htpc-manager.conf 
     dest: /etc/apache2/sites-available/htpc-manager.conf
+  notify: restart apache
 
 - name: Enable apache2 reverse proxy for HTPC-Manager
   file: 
     src: /etc/apache2/sites-available/htpc-manager.conf 
     dest: /etc/apache2/sites-enabled/htpc-manager.conf 
     state: link
+  notify: restart apache
 
-- name: Restart Apache
-  service: 
-    name: apache2 
-    state: restarted
+- name: start htpc-manager
+  systemd:
+    state: started
+    name: htpc-manager.service
